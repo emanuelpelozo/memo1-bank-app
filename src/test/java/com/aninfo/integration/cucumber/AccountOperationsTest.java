@@ -1,5 +1,6 @@
 package com.aninfo.integration.cucumber;
 
+import com.aninfo.controller.TransactionResponse;
 import com.aninfo.exceptions.DepositNegativeSumException;
 import com.aninfo.exceptions.InsufficientFundsException;
 import com.aninfo.model.Account;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class AccountOperationsTest extends AccountIntegrationServiceTest {
 
     private Account account;
+    private TransactionResponse transactionResponse;
     private InsufficientFundsException ife;
     private DepositNegativeSumException dnse;
 
@@ -26,13 +28,13 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
 
     @Given("^Account with a balance of (\\d+)$")
     public void account_with_a_balance_of(int balance)  {
-        account = createAccount(Double.valueOf(balance));
+        account = createAccount((double) balance);
     }
 
     @When("^Trying to withdraw (\\d+)$")
     public void trying_to_withdraw(int sum) {
         try {
-            account = withdraw(account, Double.valueOf(sum));
+            transactionResponse = withdraw(account.getCbu(), (double) sum);
         } catch (InsufficientFundsException ife) {
             this.ife = ife;
         }
@@ -41,7 +43,8 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
     @When("^Trying to deposit (.*)$")
     public void trying_to_deposit(int sum) {
         try {
-            account = deposit(account, Double.valueOf(sum));
+            transactionResponse = deposit(account.getCbu(), (double) sum);
+            //account = deposit(account, Double.valueOf(sum));
         } catch (DepositNegativeSumException dnse) {
             this.dnse = dnse;
         }
@@ -49,7 +52,7 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
 
     @Then("^Account balance should be (\\d+)$")
     public void account_balance_should_be(int balance) {
-        assertEquals(Double.valueOf(balance), account.getBalance());
+        assertEquals(Double.valueOf(balance), transactionResponse.getAccountBalance());
     }
 
     @Then("^Operation should be denied due to insufficient funds$")

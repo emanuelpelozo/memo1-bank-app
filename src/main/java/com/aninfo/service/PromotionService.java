@@ -17,6 +17,7 @@ public class PromotionService {
 
     private Double getReward(final Double depositAmount) {
         final double reward = depositAmount * PROMOTION_REWARD_PERCENTAGE;
+
         return reward > PROMOTION_REWARD_LIMIT
                 ? PROMOTION_REWARD_LIMIT
                 : reward;

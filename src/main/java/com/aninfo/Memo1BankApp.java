@@ -1,7 +1,10 @@
 package com.aninfo;
 
+import com.aninfo.controller.TransactionResponse;
 import com.aninfo.model.Account;
+import com.aninfo.model.Transaction;
 import com.aninfo.service.AccountService;
+import com.aninfo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,6 +29,9 @@ public class Memo1BankApp {
 
 	@Autowired
 	private AccountService accountService;
+
+	@Autowired
+	private TransactionService transactionService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Memo1BankApp.class, args);
@@ -52,7 +58,7 @@ public class Memo1BankApp {
 	public ResponseEntity<Account> updateAccount(@RequestBody Account account, @PathVariable Long cbu) {
 		Optional<Account> accountOptional = accountService.findById(cbu);
 
-		if (!accountOptional.isPresent()) {
+		if (accountOptional.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		account.setCbu(cbu);
@@ -65,14 +71,21 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
-	@PutMapping("/accounts/{cbu}/withdraw")
-	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.withdraw(cbu, sum);
-	}
+//	@PutMapping("/accounts/{cbu}/withdraw")
+//	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
+//		return accountService.withdraw(cbu, sum);
+//	}
+//
+//	@PutMapping("/accounts/{cbu}/deposit")
+//	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
+//		return accountService.deposit(cbu, sum);
+//	}
 
-	@PutMapping("/accounts/{cbu}/deposit")
-	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
-		return accountService.deposit(cbu, sum);
+	@PostMapping("/transactions")
+	@ResponseStatus(HttpStatus.CREATED)
+	public TransactionResponse createTransaction(@RequestBody Transaction transaction) {
+
+		return transactionService.createTransaction(transaction);
 	}
 
 	@Bean
