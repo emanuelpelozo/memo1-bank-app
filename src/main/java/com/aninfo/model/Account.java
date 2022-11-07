@@ -1,18 +1,20 @@
 package com.aninfo.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cbu;
 
     private Double balance;
-
-    public Account(){
-    }
 
     public Account(Double balance) {
         this.balance = balance;

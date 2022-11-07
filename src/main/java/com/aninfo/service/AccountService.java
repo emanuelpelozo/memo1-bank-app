@@ -17,6 +17,9 @@ public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private PromotionService promotionService;
+
     public Account createAccount(Account account) {
         return accountRepository.save(account);
     }
@@ -59,7 +62,7 @@ public class AccountService {
         }
 
         Account account = accountRepository.findAccountByCbu(cbu);
-        account.setBalance(account.getBalance() + sum);
+        account.setBalance(account.getBalance() + promotionService.applyPromotion(sum));
         accountRepository.save(account);
 
         return account;

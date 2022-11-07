@@ -23,20 +23,26 @@ Feature: Bank account operations
     Then Operation should be denied due to negative sum
     And Account balance should remain 200
 
+  Scenario: Retrieve transactions for account with a deposit
+    Given Account with a deposit transaction of 1000
+    When Trying to retrieve transactions for account
+    Then Obtain deposit transaction of 1000 for account
 
-Feature: Bank account promo, get 10% extra in your $2000+ deposits, up to $500
+  Scenario: Retrieve transactions for account with a withdraw
+    Given Account with a withdraw transaction of 100
+    When Trying to retrieve transactions for account
+    Then Obtain withdraw transaction of 100 for account
 
-  Scenario: Successfully promo applied, cap not reached.
-    Given Account with a balance of 0
-    When Trying to deposit 2000
-    Then Account balance should be 2200
+  Scenario: Retrieve transactions for a non existent account
+    Given Non existent account
+    When Trying to retrieve transactions for account
+    Then Operation should fail due to non existent account
 
-  Scenario: Successfully promo applied, cap reached.
-    Given Account with a balance of 0
-    When Trying to deposit 6000
-    Then Account balance should be 6500
-
-  Scenario: Promo not applied
-    Given Account with a balance of 0
-    When Trying to deposit 1500
-    Then Account balance should be 1500
+  Scenario: Retrieve transactions for account with a
+            withdraw and a deposit with a deleted transaction
+    Given Account with a withdraw transaction of 100
+    And Same account with a deposit transaction of 1000
+    And Same account delete the 1 transaction
+    When Trying to retrieve transactions for account
+    Then Obtain 1 transactions
+    And Obtain deposit transaction of 1000 for account in 1 place
