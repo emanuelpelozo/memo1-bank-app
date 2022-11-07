@@ -22,3 +22,26 @@ Feature: Bank account operations
     When Trying to deposit -100
     Then Operation should be denied due to negative sum
     And Account balance should remain 200
+
+  Scenario: Retrieve transactions for account with a deposit
+    Given Account with a deposit transaction of 1000
+    When Trying to retrieve transactions for account
+    Then Obtain deposit transaction of 1000 for account
+
+  Scenario: Retrieve transactions for account with a withdraw
+    Given Account with a withdraw transaction of 100
+    When Trying to retrieve transactions for account
+    Then Obtain withdraw transaction of 100 for account
+
+  Scenario: Retrieve transactions for a non existent account
+    Given Non existent account
+    When Trying to retrieve transactions for account
+    Then Operation should fail due to non existent account
+
+  Scenario: Retrieve transactions for account with a withdraw and a deposit
+    Given Account with a withdraw transaction of 100
+    And Same account with a deposit transaction of 1000
+    When Trying to retrieve transactions for account
+    Then Obtain 2 transactions
+    And Obtain withdraw transaction of 100 for account in 1 place
+    And Obtain deposit transaction of 1000 for account in 2 place

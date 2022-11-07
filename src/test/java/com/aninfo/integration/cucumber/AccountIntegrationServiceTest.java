@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.List;
+
 import static com.aninfo.model.TransactionType.DEPOSIT;
 import static com.aninfo.model.TransactionType.WITHDRAW;
 
@@ -28,20 +30,16 @@ public class AccountIntegrationServiceTest {
         return accountService.createAccount(new Account(balance));
     }
 
-//    Account withdraw(Account account, Double sum) {
-//        return accountService.withdraw(account.getCbu(), sum);
-//    }
-
     TransactionResponse withdraw(Long cbu, Double amount) {
         return createTransaction(cbu, amount, WITHDRAW);
     }
 
-//    Account deposit(Account account, Double sum) {
-//        return accountService.deposit(account.getCbu(), sum);
-//    }
-
     TransactionResponse deposit(Long cbu, Double amount) {
         return createTransaction(cbu, amount, DEPOSIT);
+    }
+
+    List<Transaction> getTransactionsFor(Long cbu) {
+        return transactionService.findTransactionsByCbu(cbu);
     }
 
     private TransactionResponse createTransaction(Long cbu, Double amount, TransactionType type) {

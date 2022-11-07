@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -71,21 +72,27 @@ public class Memo1BankApp {
 		accountService.deleteById(cbu);
 	}
 
-//	@PutMapping("/accounts/{cbu}/withdraw")
-//	public Account withdraw(@PathVariable Long cbu, @RequestParam Double sum) {
-//		return accountService.withdraw(cbu, sum);
-//	}
-//
-//	@PutMapping("/accounts/{cbu}/deposit")
-//	public Account deposit(@PathVariable Long cbu, @RequestParam Double sum) {
-//		return accountService.deposit(cbu, sum);
-//	}
-
 	@PostMapping("/transactions")
 	@ResponseStatus(HttpStatus.CREATED)
 	public TransactionResponse createTransaction(@RequestBody Transaction transaction) {
 
 		return transactionService.createTransaction(transaction);
+	}
+
+	@GetMapping("/transactions/{id}")
+	public ResponseEntity<Transaction> getTransaction(@PathVariable Long id) {
+		return ResponseEntity.of(transactionService.getTransaction(id));
+	}
+
+	@GetMapping("/transactions")
+	public ResponseEntity<List<Transaction>> findTransactionsByCbu(
+			@RequestParam(name = "cbu") final Long cbu) {
+		return ResponseEntity.ok(transactionService.findTransactionsByCbu(cbu));
+	}
+
+	@DeleteMapping("/transactions/{id}")
+	public void deleteTransactions(@PathVariable Long id) {
+		transactionService.deleteById(id);
 	}
 
 	@Bean
