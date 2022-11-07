@@ -42,6 +42,10 @@ public class AccountIntegrationServiceTest {
         return transactionService.findTransactionsByCbu(cbu);
     }
 
+    void deleteTransactionById(Long id) {
+        transactionService.deleteById(id);
+    }
+
     private TransactionResponse createTransaction(Long cbu, Double amount, TransactionType type) {
         return transactionService.createTransaction(new Transaction(cbu, amount, type));
     }

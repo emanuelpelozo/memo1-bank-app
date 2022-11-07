@@ -38,10 +38,11 @@ Feature: Bank account operations
     When Trying to retrieve transactions for account
     Then Operation should fail due to non existent account
 
-  Scenario: Retrieve transactions for account with a withdraw and a deposit
+  Scenario: Retrieve transactions for account with a
+            withdraw and a deposit with a deleted transaction
     Given Account with a withdraw transaction of 100
     And Same account with a deposit transaction of 1000
+    And Same account delete the 1 transaction
     When Trying to retrieve transactions for account
-    Then Obtain 2 transactions
-    And Obtain withdraw transaction of 100 for account in 1 place
-    And Obtain deposit transaction of 1000 for account in 2 place
+    Then Obtain 1 transactions
+    And Obtain deposit transaction of 1000 for account in 1 place

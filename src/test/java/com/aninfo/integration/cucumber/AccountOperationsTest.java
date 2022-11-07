@@ -177,4 +177,9 @@ public class AccountOperationsTest extends AccountIntegrationServiceTest {
         assertEquals(Double.valueOf(sum), transaction.getAmount());
         assertEquals(account.getCbu(), transaction.getCbu());
     }
+
+    @And("^Same account delete the (\\d+) transaction$")
+    public void sameAccountDeleteTheTransaction(int transactionId) {
+        deleteTransactionById((long) transactionId);
+    }
 }
